@@ -1,0 +1,45 @@
+{% extends 'accounts/main.html' %}
+{% block content %}
+{% load cart %}
+
+<div class = 'container-fluid'>
+    <br>
+    <div class = 'card card-body'>
+        {% if request.session.cart %}
+
+            <table class="table table-sm">
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+                {% for i,value in cart.items %}
+                    <tr>
+                        <td>{{ i|getprodname }}</td>
+                        <td>{{ value }}</td>
+                        <td>{{ i|getprodprice }}/-</td>
+                        <td>{{ i|getprodamount:value }}/-</td>
+                        <td><a class = "btn btn-sm btn-danger" href="{% url "accounts:user_cart_remove" i %}">Remove</a></td>
+                    </tr>
+                {% endfor %}
+                    <tr>
+                        <td><b>Total</b></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ cart.items|gettotalamount }}/-</td>
+                        <td>
+                            <form method="POST">
+                                {% csrf_token %}
+                                    <input class = "btn btn-sm btn-success" type="submit" value="Place Order">
+                            </form>
+                        </td>
+                    </tr>
+            </table>
+        {% else %}
+            <h6>No products in cart</h6>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,164 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+{% block content %}
+    {% load cart %}
+    <style>
+	.pic{
+		 width: 15em;height: 13em;margin:20px auto;alignment:center;cover:fit;
+	}
+    .pict{
+		 width: 100%;height: 100%;alignment:bottom;
+	}
+    .prod {
+        padding: 3px 3px;
+    }
+.page-heading {
+    padding: 200px 0px 250px 0px;
+    text-align: center;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+</style>
+    <div class="pict page-heading about-heading" style="background-image: url({% static 'images/790423.jpg' %})">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="text-content">
+            </div>
+          </div>
+        </div>
+      </div>
+        </div>
+    <br>
+<div class="container-fluid">
+    <div style="padding:20px" class="card">
+        <div class="row">
+            <div class="col">
+                <div class="card card-body">
+                <h4>Filter:</h4>
+                    <form method="get">
+                    <div class="row">
+                        {% for forms in filter.form %}
+                            <div class="col-md-3">
+                            <div class="prod card" style="background-color:powderblue;margin:20px">
+                        {{ forms.label }} : {{ forms }}
+                            </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <span style="padding-right:30px"><button class="btn btn-sm btn-primary" type="submit">Search</button></span>
+                  </form>
+                </div>
+            </div>
+        </div>
+        <br>
+        <h3>Products:</h3>
+        <hr>
+        <div class="row">
+            {% if products %}
+                {% for product in products %}
+                    {%  if forloop.counter|divisibleby:4 %}
+                        <div class="col-md-3">
+                            <div class="prod card" style="margin:8px;border:1px solid">
+                                {% if product.product_pic %}
+                                    <img class="pic" src="{{product.product_pic.url}}"  alt="no img">
+                                {% else %}
+                                    <img class="pic" src="{% static 'images/product_1.png' %}"  alt="no img">
+                                {% endif %}
+                                <div style=";background-color:powderblue;" class="card-body">
+                                    <h6 class="card-title">{{ product.brand }} {{ product.name }}</h6>
+                                    <p class="card-text">Price:{{ product.price }}/-</p>
+                                    <p class="card-text">{% if product.description %}{{ product.description }}{% else %}<br>{% endif %}</p>
+                                    <a href="#" class="btn" style="background-color:gold" data-toggle="modal" data-target="#exampleModal{{ product.id }}">Add to Cart</a>
+                                    <div class="modal fade" id="exampleModal{{ product.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{ product.id }}" aria-hidden="true">
+                                          <div class="modal-dialog" role="document">
+                                              <form  method="POST">
+                                                    {% csrf_token %}
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel{{ product.id }}">{{ product.name }}</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            {% if request.session.cart|get_value_from_dict:product.id > 0 %}
+                                                                <h6 id="exampleModalLabel{{ product.id }}">{{ request.session.cart|get_value_from_dict:product.id }} already in cart</h6>
+                                                            {% endif %}
+                                                            <label>Quantity:
+                                                                <input id = "quantity1" type="number" min="0" name="quantity1">
+                                                            </label>
+                                                            <input id = "product1" type="hidden" name="product1" value="{{ product.id }}">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                            <input type="submit" class="btn btn-primary" value="Add to Cart">
+                                                        </div>
+                                                    </div>
+                                              </form>
+                                          </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        {% if not forloop.last %}
+                            <div class="row">
+                        {% endif %}
+                    {% else %}
+                        <div class="col-md-3">
+                            <div class="prod card" style="margin:8px;border:1px solid">
+                                {% if product.product_pic %}
+                                    <img class="pic" src="{{product.product_pic.url}}"  alt="no img">
+                                {% else %}
+                                    <img class="pic" src="{% static 'images/product_1.png' %}"  alt="no img">
+                                {% endif %}
+                                <div style=";background-color:powderblue;" class="card-body">
+                                    <h6 class="card-title">{{ product.brand }} {{ product.name }}</h6>
+                                    <p class="card-text">Price:{{ product.price }}/-</p>
+                                    <p class="card-text">{% if product.description %}{{ product.description }}{% else %}<br>{% endif %}</p>
+                                    <a href="#" class="btn" style="background-color:gold" data-toggle="modal" data-target="#exampleModal{{ product.id }}">Add to Cart</a>
+                                    <div class="modal fade" id="exampleModal{{ product.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{ product.id }}" aria-hidden="true">
+                                          <div class="modal-dialog" role="document">
+                                              <form  method="POST">
+                                                    {% csrf_token %}
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel{{ product.id }}">{{ product.name }}</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            {% if request.session.cart|get_value_from_dict:product.id > 0 %}
+                                                                <h6 id="exampleModalLabel{{ product.id }}">{{ request.session.cart|get_value_from_dict:product.id }} already in cart</h6>
+                                                            {% endif %}
+                                                            <label>Quantity:
+                                                                <input id = "quantity1" type="number" min="0" name="quantity1">
+                                                            </label>
+                                                            <input id = "product1" type="hidden" name="product1" value="{{ product.id }}">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                            <input type="submit" class="btn btn-primary" value="Add to Cart">
+                                                        </div>
+                                                    </div>
+                                              </form>
+                                          </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <h5>No products</h5>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

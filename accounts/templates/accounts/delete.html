@@ -1,0 +1,21 @@
+{% extends 'accounts/main.html' %}
+{% block content %}
+     <br>
+    <div class = "container-fluid">
+    <div class = "row">
+        <div class = "col-md-6">
+            <div class = "card card-body">
+                <p>Are you sure you want to delete the following order:</p>
+                <p>Customer : {{ item.customer }}</p>
+                <p>Product : {{ item.product }}</p>
+                <p>Date Ordered : {{ item.date_created }}</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <a class ="btn btn-primary btn-warning" href = "{% url 'accounts:homepage' %}">Cancel</a>
+                    <input class ="btn btn-primary btn-danger" type="submit" name="Confirm" value = "Confirm Delete">
+                </form>
+            </div>
+        </div></div>
+    </div>
+
+{% endblock %}

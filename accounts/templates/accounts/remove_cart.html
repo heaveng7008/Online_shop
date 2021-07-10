@@ -1,0 +1,33 @@
+{% extends 'accounts/main.html' %}
+{% block content %}
+    <style>
+	.pic{
+		 width: 150px;height: 200px;background-repeat: no-repeat;margin:20px auto;alignment:center
+	}
+</style>
+    <div class="container-fluid">
+     <br>
+    <div class = "row">
+        <div class = "col-md-6">
+            <div class = "card card-body">
+                <div class="card" style="border:1px solid;width: 18rem;">
+                            <img class = 'pic' src="{{ item.product_pic.url }}">
+                            <div style="background-color:whitesmoke;" class="card-body">
+                                <h5 class="card-title">{{ item.brand }} {{ item.name }}</h5>
+                                <h6 class="card-text">Price:{{ item.price }}/-</h6>
+                                <p class="card-text">{% if item.description %}{{ item.description }}{% endif %}</p>
+                            <h6>Quantity : {{ quantity }}</h6>
+                            </div>
+                        </div>
+            <br>
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <a class ="btn btn-primary btn-warning" href = "{% url 'accounts:user_cart_page' %}">Cancel</a>
+                    <input class ="btn btn-primary btn-danger" type="submit" name="Confirm" value = "Remove">
+                </form>
+            </div>
+        </div></div>
+    </div>
+
+{% endblock %}

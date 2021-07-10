@@ -1,0 +1,81 @@
+{%  extends 'accounts/main.html' %}
+{% load static %}
+{% block content %}
+
+	<br>
+    <div class="container-fluid">
+<div class="row">
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Contact Information</h5>
+			<hr>
+			<p>Email: {{ customer.email }}</p>
+			<p>Phone: {{ customer.phone }}</p>
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Total Orders</h5>
+			<hr>
+			<h1 style="text-align: center;padding: 10px">{{ orders_count }}</h1>
+		</div>
+	</div>
+</div>
+
+
+<br>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+            <div class="row">
+                {% for forms in myFilter.form %}
+                            <div class="col-md">
+                            <div class="prod card" style="background-color:whitesmoke;margin:15px">
+                        {{ forms.label }} : {{ forms }}
+                            </div>
+                            </div>
+                        {% endfor %}
+            </div>
+		    <button style="margin-left:15px" class="btn btn-primary" type="submit">Search</button>
+		  </form>
+		</div>
+	</div>
+
+</div>
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th>Product</th>
+					<th>Quantity</th>
+					<th>Amount</th>
+					<th>Category</th>
+					<th>Date Ordered</th>
+					<th>Status</th>
+					<th>Update</th>
+					<th>Remove</th>
+				</tr>
+                {% for i in orders.order_by %}
+                    <tr>
+                        <td>{{ i.product.brand }} {{ i.product.name }}</td>
+                        <td>{{ i.quantity }}</td>
+                        <td>{{ i.product.price }}/-</td>
+                        <td>{{ i.product.category }}</td>
+                        <td>{{ i.date_created }}</td>
+                        <td>{{ i.status }}</td>
+                        <td><a class = "btn btn-sm btn-info" href="{% url 'accounts:update_order' i.id %}">Update</a></td>
+                        <td><a class = "btn btn-sm btn-danger" href="{% url 'accounts:delete_order' i.id %}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+</div>
+{% endblock %}

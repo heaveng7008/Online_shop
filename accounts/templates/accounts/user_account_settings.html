@@ -1,0 +1,40 @@
+{%  extends 'accounts/main.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+	.profile-pic{
+		width: 200px;height: 200px;background-position: center center;margin:0 auto;alignment:center;background-repeat: no-repeat;object-fit: cover;border-radius:100%
+	}
+</style>
+
+<br>
+    <div class="container-fluid">
+<div class="row">
+	<div class="col-md-3">
+		<div class="card card-body">
+			<h3 style="text-align: center">Account Settings</h3>
+			<hr>
+            {% if request.user.customer.profile_pic %}
+			<img class="profile-pic" src="{{request.user.customer.profile_pic.url}}" >
+		    {% else %}
+            <img class="profile-pic" src="{% static 'images/profile1.png' %}"}>
+            {% endif %}
+		</div>
+	</div>
+	<div class="col-md-9">
+		<div class="card card-body">
+			
+			<form method="POST" action="" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{form.as_p}}
+		
+			<input class="btn btn-primary" type="submit" name="Update Information">
+			</form>
+		</div>
+	</div>
+</div>
+</div>
+
+
+{% endblock %}
